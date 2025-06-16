@@ -1,7 +1,10 @@
 from django.db import models
 from django.utils import timezone
-from user_messages.models import Message
+from user_messages.models import UserMessage
 from clients.models import Client
+from users.models import User
+
+
 
 class Mailing(models.Model):
     STATUS_CHOICES = [
@@ -10,6 +13,7 @@ class Mailing(models.Model):
         ('completed', 'Завершена'),
     ]
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     start_time = models.DateTimeField(verbose_name='Время начала рассылки', default=timezone.now)
     end_time = models.DateTimeField(verbose_name='Время окончания рассылки')
     status = models.CharField(
@@ -18,8 +22,17 @@ class Mailing(models.Model):
         default='created',
         verbose_name='Статус'
     )
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='Сообщение')
+    message = models.ForeignKey(UserMessage, on_delete=models.CASCADE, verbose_name='Сообщение')
     recipients = models.ManyToManyField(Client, verbose_name='Получатели')
+
+    def total_attempts(self):
+        return self.logs.count()
+
+    def successful_attempts(self):
+        return self.logs.filter(status='success').count()
+
+    def failed_attempts(self):
+        return self.logs.filter(status='failed').count()
 
     def __str__(self):
         return f"Рассылка {self.id} ({self.get_status_display()})"
