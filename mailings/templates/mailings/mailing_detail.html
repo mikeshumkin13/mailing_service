@@ -10,7 +10,25 @@
   <p><strong>Текст письма:</strong> {{ mailing.message.body }}</p>
 
   <hr>
-  <h3>Получатели</h3>
+  <h3>📊 Статистика</h3>
+  <ul>
+    <li>Всего попыток: <strong>{{ mailing.total_attempts }}</strong></li>
+    <li>Успешных: <strong>{{ mailing.successful_attempts }}</strong></li>
+    <li>Неуспешных: <strong>{{ mailing.failed_attempts }}</strong></li>
+    {% if logs %}
+      <li>Последняя попытка: <strong>{{ logs.last.attempted_at|date:"d.m.Y H:i" }}</strong></li>
+    {% endif %}
+    <li>
+      {% if mailing.successful_attempts > 0 %}
+        ✅ Рассылка была <strong>успешной</strong>
+      {% else %}
+        ❌ Пока <strong>нет успешных отправок</strong>
+      {% endif %}
+    </li>
+  </ul>
+
+  <hr>
+  <h3>👥 Получатели</h3>
   <ul>
     {% for recipient in mailing.recipients.all %}
       <li>{{ recipient.full_name }} — {{ recipient.email }}</li>
@@ -20,7 +38,7 @@
   </ul>
 
   <hr>
-  <h3>Логи отправки</h3>
+  <h3>📝 Логи отправки</h3>
   <ul>
     {% for log in logs %}
       <li>
@@ -32,7 +50,16 @@
       <li>Пока нет логов отправки.</li>
     {% endfor %}
   </ul>
+    <hr>
+  <div class="mt-4">
+    {% if user == mailing.user or user.is_manager %}
+      <a href="{% url 'mailings:mailing_edit' mailing.id %}" class="btn btn-primary">✏️ Редактировать</a>
+      <a href="{% url 'mailings:mailing_delete' mailing.id %}" class="btn btn-danger">🗑️ Удалить</a>
+    {% endif %}
+    <a href="{% url 'mailings:mailing_list' %}" class="btn btn-secondary">← Назад к списку</a>
+  </div>
 </div>
 {% endblock %}
+
 
 
