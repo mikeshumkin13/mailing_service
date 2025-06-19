@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Дашборд рассылок</title>
-</head>
-<body>
-    <h1>Статистика рассылок</h1>
-    <ul>
-        <li>Всего рассылок: {{ total_mailings }}</li>
-        <li>Активных рассылок: {{ active_mailings }}</li>
-        <li>Уникальных клиентов: {{ unique_clients }}</li>
-    </ul>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>📊 Статистика рассылок</h1>
+  <ul>
+    <li>Всего рассылок: {{ total_mailings }}</li>
+    <li>Активных рассылок: {{ active_mailings }}</li>
+    <li>Уникальных клиентов: {{ unique_clients }}</li>
+  </ul>
+{% endblock %}
+

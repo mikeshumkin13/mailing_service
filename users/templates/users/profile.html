@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Профиль</title>
-</head>
-<body>
-    <h1>Привет, {{ user.username }}!</h1>
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>👤 Привет, {{ user.get_full_name|default:user.username }}!</h1>
     <p>Email: {{ user.email }}</p>
 
     <form method="post" action="{% url 'users:logout' %}">
         {% csrf_token %}
-        <button type="submit">Выйти</button>
+        <button class="btn btn-danger mt-2" type="submit">Выйти</button>
     </form>
-</body>
-</html>
-
+  </div>
+{% endblock %}

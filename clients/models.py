@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from users.models import User
+
 
 User = get_user_model()
 
@@ -15,4 +17,6 @@ class Client(models.Model):
     class Meta:
         verbose_name = 'Клиент'
         verbose_name_plural = 'Клиенты'
+
+
 

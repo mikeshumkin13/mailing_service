@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1>Список клиентов</h1>
+
+    <a href="{% url 'clients:client_create' %}" class="btn btn-primary mb-3">➕ Добавить клиента</a>
+
+    {% for client in clients %}
+      <div class="card mt-3 p-3">
+        <h5>{{ client.full_name }}</h5>
+        <p>Email: {{ client.email }}</p>
+        <p>{{ client.comment }}</p>
+      </div>
+    {% empty %}
+      <p>Клиентов пока нет.</p>
+    {% endfor %}
+  </div>
+{% endblock %}
+

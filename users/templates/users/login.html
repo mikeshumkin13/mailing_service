@@ -1,17 +1,16 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Вход</title>
-</head>
-<body>
-    <h1>Вход</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Войти</button>
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>🔐 Вход</h1>
+
+    <form method="post" class="mt-3">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-success">Войти</button>
     </form>
-    <p>Нет аккаунта? <a href="{% url 'users:register' %}">Регистрация</a></p>
-</body>
-</html>
+
+    <p class="mt-2">Нет аккаунта? <a href="{% url 'users:register' %}">Регистрация</a></p>
+  </div>
+{% endblock %}
 
