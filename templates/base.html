@@ -23,8 +23,7 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'users:profile' %}">Профиль</a>
           </li>
-
-          {% if user.is_authenticated and user.is_manager %}
+          {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'user_messages:message_list' %}">Сообщения</a>
           </li>

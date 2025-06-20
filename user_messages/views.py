@@ -11,7 +11,10 @@ class MessageListView(LoginRequiredMixin, ListView):
     context_object_name = 'messages'
 
     def get_queryset(self):
-        return UserMessage.objects.filter(user=self.request.user)
+        user = self.request.user
+        if user.is_manager:
+            return UserMessage.objects.all()
+        return UserMessage.objects.filter(user=user)
 
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
@@ -27,12 +30,21 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
 
 class MessageUpdateView(LoginRequiredMixin, UpdateView):
     model = UserMessage
-    template_name = 'user_messages/message_form.html'
     fields = ['subject', 'body']
+    template_name = 'user_messages/message_form.html'
     success_url = reverse_lazy('user_messages:message_list')
 
     def get_queryset(self):
-        return UserMessage.objects.filter(user=self.request.user)
+        user = self.request.user
+        if user.is_manager:
+            return UserMessage.objects.all()
+        return UserMessage.objects.filter(user=user)
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if not (request.user == obj.user or request.user.is_manager):
+            raise Http404("У вас нет доступа к редактированию этого сообщения.")
+        return super().dispatch(request, *args, **kwargs)
 
 
 class MessageDeleteView(LoginRequiredMixin, DeleteView):
@@ -41,6 +53,14 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('user_messages:message_list')
 
     def get_queryset(self):
-        return UserMessage.objects.filter(user=self.request.user)
+        user = self.request.user
+        if user.is_manager:
+            return UserMessage.objects.all()
+        return UserMessage.objects.filter(user=user)
 
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if not (request.user == obj.user or request.user.is_manager):
+            raise Http404("У вас нет доступа к удалению этого сообщения.")
+        return super().dispatch(request, *args, **kwargs)
 
