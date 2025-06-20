@@ -9,5 +9,6 @@ urlpatterns = [
     path('users/', include('users.urls', namespace='users')),
     path('mailings/', include('mailings.urls', namespace='mailings')),
     path('clients/', include('clients.urls')),
+    path('messages/', include('user_messages.urls', namespace='user_messages')),
 ]
 
