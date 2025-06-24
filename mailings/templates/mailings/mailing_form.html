@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1>Создание рассылки</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Создать</button>
+      <a href="{% url 'mailings:mailing_list' %}" class="btn btn-secondary">Назад</a>
+    </form>
+  </div>
+{% endblock %}
+

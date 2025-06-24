@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>Сообщения</h1>
+    <a href="{% url 'user_messages:message_create' %}" class="btn btn-success mb-3">➕ Создать сообщение</a>
+
+    {% if messages %}
+      <ul class="list-group">
+        {% for message in messages %}
+          <li class="list-group-item">
+            <strong>{{ message.subject }}</strong>
+            <a href="{% url 'user_messages:message_update' message.pk %}" class="btn btn-sm btn-outline-primary float-end ms-2">✏️</a>
+            <a href="{% url 'user_messages:message_delete' message.pk %}" class="btn btn-sm btn-outline-danger float-end">🗑️</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Сообщений пока нет.</p>
+    {% endif %}
+  </div>
+{% endblock %}
+
+
