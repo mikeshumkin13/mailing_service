@@ -2,6 +2,8 @@ from django.core.management.base import BaseCommand
 from django.core.mail import send_mail
 from django.utils import timezone
 from mailings.models import Mailing, MailingLog
+from django.conf import settings
+
 
 class Command(BaseCommand):
     help = 'Отправить активные рассылки'
@@ -25,10 +27,11 @@ class Command(BaseCommand):
                     send_mail(
                         subject=mailing.message.subject,
                         message=mailing.message.body,
-                        from_email='noreply@example.com',
+                        from_email=settings.DEFAULT_FROM_EMAIL,
                         recipient_list=[client.email],
                         fail_silently=False,
                     )
+
                     MailingLog.objects.create(
                         mailing=mailing,
                         status='success',
